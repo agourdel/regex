@@ -1737,10 +1737,10 @@ impl<T: AsRef<[u32]>> DFA<T> {
         valid_classes.clear();
         for (unit, next_state) in state.transitions() {
             if !self.special.is_dead_state(next_state) && !self.special.is_quit_state(next_state) {
-                if let Some(byte) = unit.as_u8() {
-                    let class_id = self.tt.classes.get(byte);
-                    if !valid_classes.contains(&class_id) {
-                        valid_classes.push(class_id);
+                if let Some(class) = unit.as_u8() {
+                    
+                    if !valid_classes.contains(&class) {
+                        valid_classes.push(class);
                     }
                 }
             }
