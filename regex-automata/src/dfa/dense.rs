@@ -1732,15 +1732,20 @@ impl<T: AsRef<[u32]>> DFA<T> {
     }
 
     /// Returns the valid byte classes for a state
-    pub fn get_valid_classes_from_state(&self, state_id: StateID) -> Vec<alphabet::Unit> {
+    pub fn get_valid_classes_from_state(&self, state_id: StateID, valid_classes: &mut Vec<u8>)  {
         let state = self.tt.state(state_id);
-        let mut valid_classes = Vec::new();
+        valid_classes.clear();
         for (unit, next_state) in state.transitions() {
             if !self.special.is_dead_state(next_state) && !self.special.is_quit_state(next_state) {
-                valid_classes.push(unit);
+                if let Some(byte) = unit.as_u8() {
+                    let class_id = self.tt.classes.get(byte);
+                    if !valid_classes.contains(&class_id) {
+                        valid_classes.push(class_id);
+                    }
+                }
             }
         }
-        valid_classes
+        
     }
 }
 
