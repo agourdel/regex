@@ -10,6 +10,7 @@ This module also contains a [`dense::Builder`](Builder) and a
 #[cfg(feature = "dfa-build")]
 use core::cmp;
 use core::{fmt, iter, mem::size_of, slice};
+use std::println;
 
 #[cfg(feature = "dfa-build")]
 use alloc::{
@@ -1736,7 +1737,10 @@ impl<T: AsRef<[u32]>> DFA<T> {
         let state = self.tt.state(state_id);
         valid_classes.clear();
         for (unit, next_state) in state.transitions() {
-            if !self.special.is_dead_state(next_state) && !self.special.is_quit_state(next_state) && !(state_id==next_state && self.special.is_match_state(state_id))  {
+            if !self.special.is_dead_state(next_state) 
+            && !self.special.is_quit_state(next_state) 
+            && !(state_id==next_state && self.special.is_match_state(state_id))  {
+                println!("> State_id : {:?} - Next_state_id : {:?}", state_id, next_state);
                 if let Some(class) = unit.as_u8() {
                     
                     if !valid_classes.contains(&class) {
