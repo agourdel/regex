@@ -1736,13 +1736,13 @@ impl<T: AsRef<[u32]>> DFA<T> {
     pub fn get_valid_classes_from_state(&self, state_id: StateID, valid_classes: &mut Vec<u8>)  {
         let state = self.tt.state(state_id);
         valid_classes.clear();
-        println!("Quit ID: {}", self.special.quit_id.as_usize());
-        println!("Stride: {}", self.stride());
+       
         for (unit, next_state) in state.transitions() {
             if !self.special.is_dead_state(next_state) 
             && !self.special.is_quit_state(next_state) 
+            && !self.special.is_match_state(next_state)
             {
-                println!("> State_id : {:?} - Next_state_id : {:?}", state_id, next_state);
+                
                 if let Some(class) = unit.as_u8() {
                     
                     if !valid_classes.contains(&class) {
