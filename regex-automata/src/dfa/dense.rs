@@ -1740,7 +1740,7 @@ impl<T: AsRef<[u32]>> DFA<T> {
         for (unit, next_state) in state.transitions() {
             if !self.special.is_dead_state(next_state) 
             && !self.special.is_quit_state(next_state) 
-            && !self.special.is_match_state(next_state)
+            && !self.special.is_match_state(self.next_eoi_state(next_state))
             {
                 
                 if let Some(class) = unit.as_u8() {
